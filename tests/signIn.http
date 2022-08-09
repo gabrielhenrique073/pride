@@ -1,0 +1,8 @@
+# Make sign in in Pride application and
+# return an access token to use in another
+# requests in API
+
+POST http://api.pride.localhost/auth
+Content-Type: application/x-www-form-urlencoded
+
+username=ghrlbr&password=123

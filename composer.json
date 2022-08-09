@@ -1,0 +1,13 @@
+{
+    "name": "root/pride",
+    "type": "project",
+    "require": {
+        "slim/slim": "4.*",
+        "slim/psr7": "^1.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Pride\\Routes\\": "routes/"
+        }
+    }
+}
