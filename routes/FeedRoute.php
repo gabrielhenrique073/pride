@@ -7,7 +7,7 @@ namespace Pride\Routes
 
     final class FeedRoute
     {
-        public function get(string $token) : array {
+        public function get(string $authorization) : array {
             throw new Exception('Not implemented');
         }
     }

@@ -1,0 +1,7 @@
+# Make sign in in Pride application and
+# return an access token to use in another
+# requests in API
+
+DELETE http://api.pride.localhost/auth
+Content-Type: application/x-www-form-urlencoded
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsIm5hbWUiOiJHYWJyaWVsIExvcGVzIiwiaWF0IjoxNjYwMTQ1NTMxLCJleHAiOjE2NjAyMzE5MzF9.MCzdDEX3ZrbRaSvB8CbTNadib8fD_YidxyiOua5Bigk

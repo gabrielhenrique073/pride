@@ -3,11 +3,15 @@
     "type": "project",
     "require": {
         "slim/slim": "4.*",
-        "slim/psr7": "^1.5"
+        "slim/psr7": "^1.5",
+        "firebase/php-jwt": "^6.3",
+        "rakibtg/sleekdb": "^2.6"
     },
     "autoload": {
         "psr-4": {
-            "Pride\\Routes\\": "routes/"
+            "Pride\\Routes\\": "routes/",
+            "Pride\\Classes\\": "classes/",
+            "Pride\\Repositories\\": "repositories/"
         }
     }
 }

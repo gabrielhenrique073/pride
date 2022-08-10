@@ -10,7 +10,7 @@ namespace Pride\Routes
         public function register(string $username, string $password) : bool {
             throw new Exception('Not implemented');
         }
-        public function unregister(string $token) : bool {
+        public function unregister(string $authorization) : bool {
             throw new Exception('Not implemented');
         }
     }

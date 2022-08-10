@@ -7,7 +7,7 @@ namespace Pride\Routes
 
     final class UserRoute
     {
-        public function about(string $token, int $id) : array {
+        public function about(string $authorization, int $id) : array {
             throw new Exception('Not implemented');
         }
     }

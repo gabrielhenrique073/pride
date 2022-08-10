@@ -7,13 +7,13 @@ namespace Pride\Routes
 
     final class CommentRoute
     {
-        public function comment(string $token, string $content, int $post) : bool {
+        public function comment(string $authorization, string $content, int $post) : bool {
             throw new Exception('Not implemented');
         }
-        public function list(string $token, int $post) : array {
+        public function list(string $authorization, int $post) : array {
             throw new Exception('Not implemented');
         }
-        public function get(string $token, int $id) : array {
+        public function get(string $authorization, int $id) : array {
             throw new Exception('Not implemented');
         }
     }
