@@ -2,36 +2,31 @@
 
 namespace Pride\Routes
 {
-
-    use Pride\Classes\Token;
-    use Pride\Classes\User;
-    use Pride\Classes\Account;
+    use Psr\Http\Message\ResponseInterface as Response;
+    use Psr\Http\Message\ServerRequestInterface as Request;
     use Pride\Classes\Auth;
     use Exception;
 
     final class AuthRoute
     {
-        public function signIn(string $username, string $password) : string {
+        public static function signIn(Request $req, Response $res) : Response {
+
+            $body = $req -> getParsedBody();
+
+            if(!isset($body['username'])) throw new Exception('Username is required', 400);
+            if(!isset($body['password'])) throw new Exception('Password is required', 400);
+
+            $username = (string) $body['username'];
+            $password = (string) $body['password'];
 
             $auth = new Auth();
+            $authorization = $auth -> signIn($username, $password);
 
-            if(!$auth -> match($username, $password))
-                throw new Exception('Invalid credentials', 400);
+            $res
+                -> getBody()
+                -> write($authorization);
 
-            $token = new Token();
-            $token -> setClaim('sub', 1);
-            $token -> setClaim('name', 'Gabriel Lopes');
-
-            return $token -> generate();
-        }
-        public function signOut(string $authorization) : void {
-
-            $token = new Token();
-
-            if(!$token -> isValid($authorization))
-                throw new Exception('Invalid token');
-
-            $token -> revoke($authorization);
+            return $res -> withStatus(201);
         }
     }
 }

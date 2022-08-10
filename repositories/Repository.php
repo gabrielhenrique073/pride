@@ -7,7 +7,7 @@ namespace Pride\Repositories
     class Repository extends Store
     {
         public function __construct() {
-            $this -> gateway = new Store(
+            $this -> store = new Store(
                 $this -> name, 
                 ROOT . '/data',
                 [

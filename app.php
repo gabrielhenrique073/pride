@@ -11,23 +11,12 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Routing\RouteCollectorProxy as Proxy;
 use Slim\Factory\AppFactory as App;
-use Pride\Routes\AuthRoute;
 
 $app = App::create();
 
 $app -> addRoutingMiddleware();
-
 $errorMiddleware = $app -> addErrorMiddleware(true, true, true);
-$errorMiddleware -> setDefaultErrorHandler(
-    function(
-        Request $req,
-        Throwable $e,
-        bool $displayErrorDetails,
-        bool $logErrors,
-        bool $logErrorDetails,
-        ?LoggerInterface $logger = null
-    ) use ($app) {
-
+$errorMiddleware -> setDefaultErrorHandler(function(Request $req, Throwable $e, bool $displayErrorDetails, bool $logErrors, bool $logErrorDetails, ?LoggerInterface $logger = null) use ($app) : Response {
         $errorCode = $e -> getCode();
         if($errorCode < 100 || $errorCode > 599)
             $errorCode = 500;
@@ -52,44 +41,27 @@ $errorMiddleware -> setDefaultErrorHandler(
     }
 );
 
-$app -> group('/auth', 
-    function(Proxy $proxy){
-        $proxy -> delete('', 
-            function(Request $req, Response $res){
-                $headers = $req -> getHeaders();
-
-                if(!isset($headers['authorization'][0])) throw new Exception('Authorization is required', 401);
-
-                $authorization = (string) $headers['authorization'][0];
-                $authorization = preg_replace('/^(.*)\s/', '', $authorization);
-
-                $authRoute = new AuthRoute();
-                $authRoute -> signOut($authorization);
-
-                return $res -> withStatus(200);
-            }
-        );
-        $proxy -> post('', 
-            function(Request $req, Response $res){
-                $body = $req -> getParsedBody();
-
-                if(!isset($body['username'])) throw new Exception('Username is required', 400);
-                if(!isset($body['password'])) throw new Exception('Password is required', 400);
-
-                $username = (string) $body['username'];
-                $password = (string) $body['password'];
-
-                $authRoute = new AuthRoute();
-                $authorization = $authRoute -> signIn($username, $password);
-                
-                $res 
-                    -> getBody() 
-                    -> write($authorization);
-
-                return $res -> withStatus(201);
+$app -> group('', function(Proxy $root){
+        $root -> group('/api', function(Proxy $api){
+                $api -> group('/account', function(Proxy $account){
+                        $account -> post('', 'Pride\Routes\AccountRoute::register');
+                    }
+                );
+                $api -> group('/auth', function(Proxy $account){
+                        $account -> post('', 'Pride\Routes\AuthRoute::signIn');
+                    }
+                );
             }
         );
     }
 );
+
+
+//                 $headers = $req -> getHeaders();
+
+//                 if(!isset($headers['authorization'][0])) throw new Exception('Authorization is required', 401);
+
+//                 $authorization = (string) $headers['authorization'][0];
+//                 $authorization = preg_replace('/^(.*)\s/', '', $authorization);
 
 $app -> run();

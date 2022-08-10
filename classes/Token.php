@@ -27,7 +27,7 @@ namespace Pride\Classes
             );
 
             $tokenRepository = new TokenRepository();
-            $tokenRepository -> gateway -> insert(
+            $tokenRepository -> store -> insert(
                 [
                     'authorization' => $authorization,
                 ]
@@ -41,7 +41,7 @@ namespace Pride\Classes
                 throw new Exception('You can not revoke an invalid authorization', 401);
 
             $tokenRepository = new TokenRepository();
-            $tokenData = $tokenRepository -> gateway -> findOneBy(
+            $tokenData = $tokenRepository -> store -> findOneBy(
                 [
                     ['authorization', '=', $authorization]
                 ]
@@ -64,7 +64,7 @@ namespace Pride\Classes
             }
 
             $tokenRepository = new TokenRepository();
-            $tokenData = $tokenRepository -> gateway -> findOneBy(
+            $tokenData = $tokenRepository -> store -> findOneBy(
                 [
                     ['authorization', '=', $authorization],
                     ['isRevoked', '=', true]
